@@ -1,0 +1,172 @@
+#
+# wm independent hotkeys
+#
+#  Desktop/window cycling #
+# Cycle desktops
+F1
+	bspc desktop --focus prev
+# Cycle monitors
+super + F1
+	bspc monitor --focus prev
+F2
+	bspc desktop --focus next
+
+
+
+# Desktop splitting #
+# Flip the desktop window tree
+{_,super + } + F3
+	bspc desktop --flip {vertical,horizontal}
+# Rotate the desktop window tree
+{ctrl,alt} + F3
+  bspc desktop --rotate {270,90}
+
+# Maximization #
+# Toggle monocle/tiled
+F4
+	bspc desktop --layout next
+
+# Make a new desktop and switch to it
+F5
+	~/.bin/add_desktop.sh
+
+F6
+	~/.bin/remove_current_desktop.sh
+
+# terminal emulator
+super + Return
+	termite
+super + x
+	bspc  node -c
+super + shift + r
+	$HOME/.config/bspwm/bspwmrc
+# Kill window
+super + shift + x
+	bspc node -k
+# program launcher
+super + d
+	rofi -show drun -location 1 -width 30 -xoffset 10 -yoffset 30
+~button3
+	$HOME/.bin/menu.sh
+
+
+# make sxhkd reload its configuration files:
+super + Escape
+	pkill -USR1 -x sxhkd
+
+#
+# bspwm hotkeys
+#
+super + {grave,Tab}
+	rofi -show window -location 0  -width 35 -theme "gruvbox-transparent"	
+# quit bspwm normally
+super + alt + Escape
+	bspc quit
+
+super + alt + Escape
+	pkill -x panel; bspc quit
+
+# close and kill
+super + {_,shift + }w
+	bspc node -{c,k}
+
+# alternate between the tiled and monocle layout
+super + m
+	bspc desktop -l next
+
+# send the newest marked node to the newest preselected node
+super + y
+	bspc node newest.marked.local -n newest.!automatic.local
+
+# swap the current node and the biggest node
+super + g
+	bspc node -s biggest
+
+#
+# state/flags
+#
+
+# set the window state
+super + {t,shift + t,s,f}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# set the node flags
+super + ctrl + {m,x,y,z}
+	bspc node -g {marked,locked,sticky,private}
+
+#
+# focus/swap
+#
+
+# focus the node in the given direction
+super + {_,shift + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+
+# focus the node for the given path jump
+super + {p,b,comma,period}
+	bspc node -f @{parent,brother,first,second}
+
+# focus the next/previous node in the current desktop
+super + {_,shift + }c
+	bspc node -f {next,prev}.local
+
+# focus the next/previous desktop in the current monitor
+super + bracket{left,right}
+	bspc desktop -f {prev,next}.local
+
+# focus the last node/desktop
+#super + {grave,Tab}
+#	bspc {node,desktop} -f last
+
+# focus the older or newer node in the focus history
+super + {o,i}
+	bspc wm -h off; \
+	bspc node {older,newer} -f; \
+	bspc wm -h on
+
+
+#
+# preselect
+#
+
+# preselect the direction
+super + ctrl + {h,j,k,l}
+	bspc node -p {west,south,north,east}
+
+# preselect the ratio
+super + ctrl + {1-9}
+	bspc node -o 0.{1-9}
+
+# cancel the preselection for the focused node
+super + ctrl + space
+	bspc node -p cancel
+
+# cancel the preselection for the focused desktop
+super + ctrl + shift + space
+	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+#
+# move/resize
+#
+
+# expand a window by moving one of its side outward
+super + alt + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# contract a window by moving one of its side inward
+super + alt + shift + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# move a floating window
+super + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}
+#cycle through visible nodes
+alt + Tab
+	$HOME/.bin/safe_cycle.sh	
+#cycle through and show hidden nodes
+alt + super + Tab
+	$HOME/.bin/hidden_window_switcher.py
+alt + super + button1
+	$HOME/.bin/set_node_flags.sh
+alt + button1
+	bspc node pointed -g hidden
