@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# Padding
+bspc config top_padding 30
+
+# Borders and gaps
+bspc config border_width 5
+bspc config window_gap 0
+bspc config borderless_monocle false
+bspc config gapless_monocle true
+
+# Border colors
+bspc config normal_border_color "1b1b1b"
+#bspc config normal_private_border_color "#888888"
+bspc config focused_border_color "#9e9e9e"
+bspc config urgent_border_color "#b58900"
+# It looks like these options get overridden by Compton...
+
+# Multihead behavior
+bspc config remove_disabled_monitors true
+bspc config remove_unplugged_monitors true
+
+# Focusing behavior
+bspc config focus_follows_pointer false
+bspc config history_aware_focus true
+
+# Misc
+bspc config split_ratio 0.50
+bspc config auto_alternate true
+bspc config auto_cancel true
+# Set up displays
+bspc desktop Desktop -n MAIN
+
+bspc config external_rules_command "$(which external_rules)"
+
+
+
+$HOME/.config/bspwm/autostart &
