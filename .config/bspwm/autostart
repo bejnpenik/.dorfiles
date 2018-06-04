@@ -1,0 +1,13 @@
+#!/bin/sh
+
+
+
+sxhkd &
+setxkbmap -layout si &
+pulseaudio -D &
+compton -b --config $HOME/.config/compton.conf &
+feh --bg-scale $HOME/Pictures/rain_window_glass_buildings_drops_109669_1920x1080.jpg &
+sleep 1
+$HOME/.config/bspwm/bar/bspwm-bar-python/main.py &
+
+xsetroot -cursor_name left_ptr
