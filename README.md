@@ -1,2 +1,2 @@
-# .dorfiles
+# .dotfiles
 Arch linux dotfiles
