@@ -1,0 +1,55 @@
+item = Run
+cmd = rofi -show drun -m -3
+icon = /usr/share/icons/Paper/scalable/actions/system-run-symbolic.svg
+
+item = Find
+cmd = rofi-finder.sh
+icon = /usr/share/icons/Paper/scalable/apps/preferences-system-search-symbolic.svg
+
+item = Terminal
+cmd = termite
+icon = /usr/share/icons/Paper/scalable/apps/utilities-terminal-symbolic.svg
+
+item = Browser
+cmd = firefox
+icon = /usr/share/icons/Paper/scalable/apps/web-browser-symbolic.svg
+
+item = Files
+cmd = pcmanfm
+icon = /usr/share/icons/Paper/scalable/apps/system-file-manager-symbolic.svg
+
+item = Editor
+cmd = gedit
+icon = /usr/share/icons/Paper/scalable/apps/text-editor-symbolic.svg
+
+
+
+separator
+
+submenu = Exit
+
+	icon = /usr/share/icons/Paper/scalable/actions/system-shutdown-symbolic.svg
+
+	item = Lock screen
+	cmd = screenlock
+	icon = /usr/share/icons/Paper/scalable/status/changes-allow-symbolic.svg
+
+	item = Logout
+	cmd = bspc quit 1
+	icon = /usr/share/icons/Paper/scalable/actions/application-exit-symbolic.svg
+	
+	item = Suspend
+	cmd = systemctl suspend
+	icon = /usr/share/icons/Paper/scalable/apps/utilities-system-monitor-symbolic.svg
+	
+	item = Hibenate
+	cmd = systemctl hibernate
+	icon = /usr/share/icons/Paper/scalable/actions/document-save-symbolic.svg
+	
+	item = Reboot
+	cmd = reboot
+	icon = /usr/share/icons/Paper/scalable/actions/view-refresh-symbolic.svg
+	
+	item = Shutdown
+	cmd = poweroff
+	icon = /usr/share/icons/Paper/scalable/actions/system-shutdown-symbolic.svg
