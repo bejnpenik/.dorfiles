@@ -143,7 +143,7 @@ class Desktop:
 
     def __str__(self):
         return self.name + ': ' + str(self.active) + ' ' + str(self.used)
-    def get_tasks(self):
+    def get_tasks_old(self):
         task_ids = None
         active_id = ""
         if self.used and self.active:
@@ -165,4 +165,81 @@ class Desktop:
                 else:
                     task_names.append(" " + subprocess.check_output(("xtitle","-e", task)).decode("utf-8").strip()[:15]+"...")
  
-        return task_names     
+        return task_names  
+    def get_tasks(self):
+        tasks = []
+        task_ids = None
+        try:
+            task_ids = subprocess.check_output(("bspc", "query", "-N", "-n", ".window", "-d", self.name)).decode("ascii").strip().splitlines()
+        except Exception:
+            pass
+        active_id = None
+        try:
+            active_id = subprocess.check_output(("bspc", "query", "-N", "-n", "focused.window")).decode("ascii").strip()
+        except Exception:
+            pass
+        hidden_ids = None
+        try:
+            hidden_ids = subprocess.check_output(("bspc", "query", "-N", "-n", ".hidden", "-d", self.name)).decode("ascii").strip().splitlines()
+        except Exception:
+            pass
+ 
+        if task_ids:
+            for task_id in task_ids:
+                if (active_id and task_id == active_id):
+                    tasks.append(Task(task_id, active=True))
+                elif (hidden_ids and task_id in hidden_ids):
+                    tasks.append(Task(task_id, hidden=True))
+                else:
+                    tasks.append(Task(task_id))
+        return tasks
+
+
+
+class Task:
+    TASK_NORMAL = ""
+    TASK_HIDDEN = ""
+    def __init__(self, task_id, **kw):
+        self._task_id = task_id
+        self._name = subprocess.check_output(("xtitle", "-e", self._task_id)).decode("utf-8").strip()
+        self._active = False
+        self._hidden = False
+        self._private = False
+        self._locked = False
+        self._urgent = False
+        self._sticky = False
+        if "active" in kw.keys():
+            self._active = kw["active"]
+        if "hidden" in kw.keys():
+            self._hidden = kw["hidden"]
+    @property
+    def task_id(self):
+        return self._task_id
+    @property
+    def active(self):
+        return self._active
+    @active.setter
+    def active(self, active):
+        self._active = active
+    @property
+    def hidden(self):
+        return self._hidden
+    @hidden.setter
+    def hidden(self, hidden):
+        self._hidden = hidden
+    def __str__(self, truncate = 15):
+        if self._hidden:
+            if (not truncate == -1 and len(self._name) > truncate):
+                return Task.TASK_HIDDEN + " " + self._name[: truncate] + "..."
+            else:
+                return Task.TASK_HIDDEN +  " "+ self._name
+
+        else:
+            if (not truncate == -1 and len(self._name) > truncate):
+                return Task.TASK_NORMAL + " " + self._name[: truncate] + "..."
+            else:
+                return Task.TASK_NORMAL + " " + self._name
+
+
+
+        
