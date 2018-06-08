@@ -23,7 +23,6 @@ cmd = gedit
 icon = /usr/share/icons/Paper/scalable/apps/text-editor-symbolic.svg
 
 
-
 separator
 
 submenu = Exit
@@ -31,11 +30,11 @@ submenu = Exit
 	icon = /usr/share/icons/Paper/scalable/actions/system-shutdown-symbolic.svg
 
 	item = Lock screen
-	cmd = screenlock
+	cmd = slimlock
 	icon = /usr/share/icons/Paper/scalable/status/changes-allow-symbolic.svg
 
 	item = Logout
-	cmd = bspc quit 1
+	cmd = pkill lxsession
 	icon = /usr/share/icons/Paper/scalable/actions/application-exit-symbolic.svg
 	
 	item = Suspend
