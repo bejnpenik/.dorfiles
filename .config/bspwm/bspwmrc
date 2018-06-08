@@ -31,7 +31,7 @@ bspc config auto_cancel true
 # Set up displays
 bspc desktop Desktop -n MAIN
 
-bspc config external_rules_command "$(which external_rules)"
+bspc config external_rules_command $HOME/.config/bspwm/external_rules
 
 
 
