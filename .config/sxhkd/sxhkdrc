@@ -58,7 +58,7 @@ super + Escape
 # bspwm hotkeys
 #
 super + {grave,Tab}
-	rofi -show window -location 0  -width 35 -theme "gruvbox-transparent"	
+	rofi -show window -location 0  -width 35 -lines $(bspc query -N | wc -l)	
 # quit bspwm normally
 super + alt + Escape
 	bspc quit
@@ -170,3 +170,6 @@ alt + super + button1
 	$HOME/.bin/set_node_flags.sh
 alt + button1
 	bspc node pointed -g hidden
+
+F12
+	slimlock
