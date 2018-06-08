@@ -47,6 +47,7 @@ class BarStatus:
         self._time = ''
         self._taskbar = ''
         self._volume = ''
+        self._task_click = lambda x: "bspc node %s -g hidden=off -f"%str(x)
         print("Bar initialized")
     
     def refresh(self):
@@ -106,9 +107,8 @@ class BarStatus:
                         _text.ucolor = BarStatus.COLOR_UNDERLINE
                         text += str(_text)
                         for task in desktop.tasks:
-                            if task.startswith("ACTIVEWINDOWJBT!#$%&VALDASENECEOVOPONOVITIUIMENU"):
-                                task = task[len("ACTIVEWINDOWJBT!#$%&VALDASENECEOVOPONOVITIUIMENU"):]
-                                _text = FormattedText(" " + task + " ")
+                            if task.active:
+                                _text = FormattedText(" " + str(task) + " ")
                                 _text.fgcolor = BarStatus.COLOR_FOCUSED_OCCUPIED_FG
                                 _text.bgcolor = BarStatus.COLOR_FOCUSED_OCCUPIED_BG
                             
@@ -119,22 +119,22 @@ class BarStatus:
                         _text.bgcolor = BarStatus.COLOR_FOCUSED_OCCUPIED_BG
                         text += str(_text)
                         for task in desktop.tasks:
-                            if task.startswith("ACTIVEWINDOWJBT!#$%&VALDASENECEOVOPONOVITIUIMENU"):
-                                task = task[len("ACTIVEWINDOWJBT!#$%&VALDASENECEOVOPONOVITIUIMENU"):]
-                                _text = FormattedText(" " + task + " ")
+                            _ = str(ClickableArea(str(task), lcact = self._task_click(task.task_id)))
+                            if task.active:
+                                _text = FormattedText(" "+ _ + " ")
                                 _text.fgcolor = BarStatus.COLOR_FOCUSED_OCCUPIED_FG
                                 _text.bgcolor = BarStatus.COLOR_FOCUSED_OCCUPIED_BG
                             
                                 _text.ucolor = BarStatus.COLOR_UNDERLINE
                             else:
-                                _text = FormattedText(" " + task + " ")
+                                _text = FormattedText(" " + _  + " ")
                                 _text.fgcolor = BarStatus.COLOR_OCCUPIED_FG
                                 _text.bgcolor = BarStatus.COLOR_OCCUPIED_BG
                             text += str(_text)
 
                 elif desktop.used:
                     if desktop.name == "MAIN":
-                        text = FormattedText(' ' + "" + ' ' + " ". join(desktop.tasks) + " ")
+                        text = FormattedText(' ' + "" + ' ' + " ". join([str(task) for task in desktop.tasks]) + " ")
                         text.fgcolor = BarStatus.COLOR_OCCUPIED_FG
                         text.bgcolor = BarStatus.COLOR_OCCUPIED_BG
                     else:
@@ -194,7 +194,8 @@ class ClickableArea:
             returnstring = '%{A2:' + self.mcact+':}' + returnstring + '%{A}'
         if self.mwuact:
             returnstring = '%{A4:' + self.mwuact+':}' + returnstring + '%{A}'
-        if self.mwdcact:
+        if self.mwdact:
             returnstring = '%{A5:' + self.mwdact+':}' + returnstring + '%{A}'
+        return returnstring
 
         
