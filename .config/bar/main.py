@@ -2,7 +2,6 @@
 from datetime import datetime
 from barstatus import BarStatus
 from bspccontrol import BspcControl
-from taskbar import Taskbar
 from threading import Thread
 import re
 import subprocess
@@ -103,7 +102,6 @@ def main():
 
 #Start continious jobs
 bspccontrol = BspcControl(bar)
-taskbar = Taskbar(bar)
 Thread(target=bspccontrol.inputhandler).start()
 while True:
     getcurrenttime()
